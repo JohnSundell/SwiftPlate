@@ -14,7 +14,7 @@ SwiftPlate will generate Xcode projects for you in seconds, that support:
 
 Just run `swiftplate`, and you’ll be presented with a simple step-by-step guide:
 
-<img alt=“Screenshot” src=“screenshot.png” width="100%" max-width=1818>
+<img alt="Screenshot" src="screenshot.png" width="100%" max-width="1818">
 
 ## Usage
 
