@@ -29,3 +29,7 @@ or
 - Archive the project.
 - Move the built binary to `/usr/local/bin`.
 - Run `swiftplate` in your terminal.
+
+## Questions or feedback?
+
+Feel free to [open an issue](https://github.com/JohnSundell/SwiftPlate/issues/new), or find me [@johnsundell on Twitter](https://twitter.com/johnsundell).
