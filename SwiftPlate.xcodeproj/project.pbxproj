@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		52CC95EA1DE1DF29000B8859 /* SwiftPlate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SwiftPlate; sourceTree = BUILT_PRODUCTS_DIR; };
+		52CC95EA1DE1DF29000B8859 /* swiftplate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = swiftplate; sourceTree = BUILT_PRODUCTS_DIR; };
 		52CC95F41DE1DF51000B8859 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -49,7 +49,7 @@
 		52CC95EB1DE1DF29000B8859 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				52CC95EA1DE1DF29000B8859 /* SwiftPlate */,
+				52CC95EA1DE1DF29000B8859 /* swiftplate */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,7 +71,7 @@
 			);
 			name = SwiftPlate;
 			productName = SwiftPlate;
-			productReference = 52CC95EA1DE1DF29000B8859 /* SwiftPlate */;
+			productReference = 52CC95EA1DE1DF29000B8859 /* swiftplate */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -213,7 +213,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftplate;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
@@ -224,7 +224,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = swiftplate;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
