@@ -113,7 +113,7 @@ class StringReplacer {
 // MARK: - Functions
 
 func printError(_ message: String) {
-    print("👮 \(message)")
+    print("👮  \(message)")
 }
 
 func askForRequiredInfo(question: String, errorMessage errorMessageClosure: @autoclosure () -> String) -> String {
@@ -149,7 +149,7 @@ func askForBooleanInfo(question: String) -> Bool {
 
 func askForDestination() -> String {
     let destination = askForOptionalInfo(
-        question: "📦 Where would you like to generate a project?",
+        question: "📦  Where would you like to generate a project?",
         questionSuffix: "(Leave empty to use current directory)"
     )
     
@@ -176,9 +176,9 @@ func performGitClone(path: String) throws {
 }
 
 func performCommand(description: String, command: () throws -> Void) rethrows {
-    print("👉 \(description)...")
+    print("👉  \(description)...")
     try command()
-    print("✅ Done")
+    print("✅  Done")
 }
 
 // MARK: - Program
@@ -186,23 +186,23 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
 print("Welcome to the SwiftPlate project generator 🐣")
 
 let destination = askForDestination()
-let projectName = askForRequiredInfo(question: "📛 What's the name of your project?", errorMessage: "Project name cannot be empty")
-let authorName = askForRequiredInfo(question: "👶 What's your name?", errorMessage: "Your name cannot be empty")
-let authorEmail = askForOptionalInfo(question: "📫 What's your email address (for Podspec)?")
-let gitHubURL = askForOptionalInfo(question: "🌍 Any GitHub URL that you'll be hosting this project at (for Podspec)?")
+let projectName = askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
+let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
+let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
+let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
-print("📦 Destination: \(destination)")
-print("📛 Name: \(projectName)")
-print("👶 Author: \(authorName)")
+print("📦  Destination: \(destination)")
+print("📛  Name: \(projectName)")
+print("👶  Author: \(authorName)")
 
 if let authorEmail = authorEmail {
-    print("📫 Author email: \(authorEmail)")
+    print("📫  Author email: \(authorEmail)")
 }
 
 if let gitHubURL = gitHubURL {
-    print("🌍 GitHub URL: \(gitHubURL)")
+    print("🌍  GitHub URL: \(gitHubURL)")
 }
 
 print("---------------------------------------------------------------------")
@@ -254,7 +254,7 @@ do {
         try replacer.process(filesInFolderWithPath: destination)
     }
     
-    print("All done! 🎉 Good luck with your project! 🚀")
+    print("All done! 🎉  Good luck with your project! 🚀")
 } catch {
     print("An error was encountered 🙁")
     print("Error: \(error)")
