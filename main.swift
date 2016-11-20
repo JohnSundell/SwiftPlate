@@ -211,7 +211,7 @@ if !askForBooleanInfo(question: "Proceed? ✅") {
     exit(0)
 }
 
-print("🚀 Starting to generate project \(projectName)...")
+print("🚀  Starting to generate project \(projectName)...")
 
 do {
     let fileManager = FileManager.default
