@@ -47,7 +47,7 @@
 		52D6D97C1BEFF229002C0205 /* {PROJECT}.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = {PROJECT}.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9861BEFF229002C0205 /* {PROJECT}-iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "{PROJECT}-iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9961BEFF375002C0205 /* {PROJECT}.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = {PROJECT}.swift; path = Sources/{PROJECT}.swift; sourceTree = "<group>"; };
-		52D6D9971BEFF375002C0205 /* {PROJECT}Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = {PROJECT}Tests.swift; path = Tests/{PROJECT}Tests.swift; sourceTree = "<group>"; };
+		52D6D9971BEFF375002C0205 /* {PROJECT}Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = {PROJECT}Tests.swift; path = Tests/{PROJECT}Tests/{PROJECT}Tests.swift; sourceTree = "<group>"; };
 		52D6D9E21BEFFF6E002C0205 /* {PROJECT}.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = {PROJECT}.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6D9F01BEFFFBE002C0205 /* {PROJECT}.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = {PROJECT}.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D6DA0F1BF000BD002C0205 /* {PROJECT}.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = {PROJECT}.framework; sourceTree = BUILT_PRODUCTS_DIR; };
