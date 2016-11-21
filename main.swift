@@ -170,7 +170,7 @@ func askForDestination() -> String {
 func performGitClone(path: String) throws {
     let process = Process()
     process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "git clone git@github.com:JohnSundell/SwiftPlate.git \(path) -q"]
+    process.arguments = ["-c", "git clone https://github.com/JohnSundell/SwiftPlate.git \(path) -q"]
     process.launch()
     process.waitUntilExit()
 }
