@@ -85,7 +85,7 @@ class StringReplacer {
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
                      .replacingOccurrences(of: "{YEAR}", with: year)
-                     .replacingOccurrences(of: "{ORGANIZATIONNAME}", with: organizationName)
+                     .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
     func process(filesInFolderWithPath folderPath: String) throws {
