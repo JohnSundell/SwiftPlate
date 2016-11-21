@@ -133,7 +133,7 @@ func askForOptionalInfo(question: String, questionSuffix: String = "You may leav
 }
 
 func askForBooleanInfo(question: String) -> Bool {
-    let errorMessage = "Please enter Y (yes) or N (no)"
+    let errorMessage = "Please enter Y/y (yes) or N/n (no)"
     let answerString = askForRequiredInfo(question: "\(question) (Y/N)", errorMessage: errorMessage)
     
     switch answerString.lowercased() {
