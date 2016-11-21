@@ -65,12 +65,14 @@ class StringReplacer {
     private let authorEmail: String
     private let gitHubURL: String
     private let year: String
-    
-    init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?) {
+    private let organizationName: String
+
+    init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
         self.projectName = projectName
         self.authorName = authorName
         self.authorEmail = authorEmail ?? ""
         self.gitHubURL = gitHubURL ?? ""
+        self.organizationName = organizationName ?? projectName
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY"
@@ -83,6 +85,7 @@ class StringReplacer {
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
                      .replacingOccurrences(of: "{YEAR}", with: year)
+                     .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
     func process(filesInFolderWithPath folderPath: String) throws {
@@ -192,6 +195,7 @@ let projectName = askForRequiredInfo(question: "📛  What's the name of your pr
 let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
 let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
 let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
+let organizationName = askForOptionalInfo(question: "🏢  What's your organization name?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
@@ -205,6 +209,10 @@ if let authorEmail = authorEmail {
 
 if let gitHubURL = gitHubURL {
     print("🌍  GitHub URL: \(gitHubURL)")
+}
+
+if let organizationName = organizationName {
+    print("🏢  Organization Name: \(organizationName)")
 }
 
 print("---------------------------------------------------------------------")
@@ -250,7 +258,8 @@ do {
             projectName: projectName,
             authorName: authorName,
             authorEmail: authorEmail,
-            gitHubURL: gitHubURL
+            gitHubURL: gitHubURL,
+            organizationName: organizationName
         )
         
         try replacer.process(filesInFolderWithPath: destination)
