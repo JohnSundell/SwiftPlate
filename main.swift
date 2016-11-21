@@ -136,10 +136,10 @@ func askForBooleanInfo(question: String) -> Bool {
     let errorMessage = "Please enter Y (yes) or N (no)"
     let answerString = askForRequiredInfo(question: "\(question) (Y/N)", errorMessage: errorMessage)
     
-    switch answerString {
-    case "Y":
+    switch answerString.lowercased() {
+    case "y":
         return true
-    case "N":
+    case "n":
         return false
     default:
         printError("\(errorMessage). Try again.")
