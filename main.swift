@@ -1,3 +1,5 @@
+#!/usr/bin/swift
+
 /**
  *  SwiftPlate
  *
@@ -133,7 +135,7 @@ func askForOptionalInfo(question: String, questionSuffix: String = "You may leav
 }
 
 func askForBooleanInfo(question: String) -> Bool {
-    let errorMessage = "Please enter Y (yes) or N (no)"
+    let errorMessage = "Please enter Y/y (yes) or N/n (no)"
     let answerString = askForRequiredInfo(question: "\(question) (Y/N)", errorMessage: errorMessage)
     
     switch answerString.lowercased() {
@@ -179,7 +181,7 @@ func askForDestination(project name: String) -> String {
 func performGitClone(path: String) throws {
     let process = Process()
     process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "git clone https://github.com/JohnSundell/SwiftPlate.git \(path) -q"]
+    process.arguments = ["-c", "git clone https://github.com/JohnSundell/SwiftPlate.git '\(path)' -q"]
     process.launch()
     process.waitUntilExit()
 }
