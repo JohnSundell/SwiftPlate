@@ -20,7 +20,12 @@ Just run `swiftplate`, and you’ll be presented with a simple step-by-step guid
 
 Either:
 
-- Run 'main.swift' in your terminal.
+- Run 'swift main.swift' in your terminal.
+
+or
+
+- Open `SwiftPlate.xcodeproj`.
+- Run the project, and use Xcode’s console to provide input.
 
 or
 
