@@ -18,14 +18,13 @@ Just run `swiftplate`, and you’ll be presented with a simple step-by-step guid
 
 ## Usage
 
-- Open `SwiftPlate.xcodeproj`.
-
 Either:
 
-- Run it from Xcode, and use Xcode’s console to provide input.
+- Run 'main.swift' in your terminal.
 
 or
 
+- Open `SwiftPlate.xcodeproj`.
 - Archive the project.
 - Move the built binary to `/usr/local/bin`.
 - Run `swiftplate` in your terminal.
