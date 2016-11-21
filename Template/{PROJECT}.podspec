@@ -13,6 +13,6 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = "2.0"
   s.tvos.deployment_target = "9.0"
   s.source       = { :git => "{URL}.git", :tag => "0.1" }
-  s.source_files  = "Sources/{PROJECT}.swift"
+  s.source_files  = "Sources/**/*"
   s.frameworks  = "Foundation"
 end
