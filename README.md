@@ -24,6 +24,10 @@ Either:
 
 or
 
+- run `./install.sh` from the root directory which will build the project and copy the build binary to `/usr/local/bin`.
+
+or
+
 - Open `SwiftPlate.xcodeproj`.
 - Run the project, and use Xcode’s console to provide input.
 
