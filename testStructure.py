@@ -2,10 +2,10 @@ import sys
 import os
 from os.path import join, getsize
 
-rootFiles = set(['LICENSE', 'Package.swift', 'README.md', sys.argv[1] + '.podspec', 'testStructure.py'])
+rootFiles = set(['LICENSE', 'Package.swift', 'README.md', sys.argv[1] + '.podspec'])
 configFiles = set([sys.argv[1] + '.plist', sys.argv[1] + 'Tests.plist'])
 sourceFiles = set([sys.argv[1]+ '.swift'])
-testDirs = set(['TestPlateTests'])
+testDirs = set([sys.argv[1] + 'Tests'])
 
 for root, dirs, files in os.walk('.'):
 	if root == '.':
