@@ -32,15 +32,13 @@ class {PROJECT}Tests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         //// XCTAssertEqual({PROJECT}().text, "Hello, World!")
     }
-
-
 }
 
 #if os(Linux)
 extension {PROJECT}Tests {
     static var allTests : [(String, ({PROJECT}Tests) -> () throws -> Void)] {
         return [
-          ("testExample", testExample),
+            ("testExample", testExample),
         ]
     }
 }
