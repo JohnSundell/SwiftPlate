@@ -27,5 +27,16 @@ import XCTest
 import {PROJECT}
 
 class {PROJECT}Tests: XCTestCase {
-    
+
 }
+
+#if os(Linux)
+extension {PROJECT}Tests {
+    static var allTests : [(String, ({PROJECT}Tests) -> () throws -> Void)] {
+        // FIXME: Should return a list of test case (name, function) tuples
+        return [
+          ("testExample", testExample),
+        ]
+    }
+}
+#endif
