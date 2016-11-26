@@ -24,6 +24,11 @@ Either:
 
 or
 
+- Run `make` in your terminal to install SwiftPlate.
+- Run `swiftplate` in your terminal.
+
+or
+
 - Open `SwiftPlate.xcodeproj`.
 - Run the project, and use Xcode’s console to provide input.
 
