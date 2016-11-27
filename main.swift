@@ -57,6 +57,20 @@ extension FileManager {
     }
 }
 
+extension Array {
+	func element(after index: Int) -> Element? {
+		
+		//: handles not only negative indices, but also index == self.count
+		//: might be over-engineered, we only need to check for second condition
+		let arrRange = [Int](0..<self.count)
+		if arrRange.contains(index + 1) {
+			return self[index + 1]
+		} else {
+			return nil
+		}
+	}
+}
+
 // MARK: - Types
 
 class StringReplacer {
@@ -186,16 +200,56 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
     print("✅  Done")
 }
 
+//: This *could* just be a dictionary, but a struct felt cleaner. Also, we get type safety(and autocompletion) for free!!
+struct TemplateInformation {
+	var destination: String? = nil
+	var projectName: String? = nil
+	var authorName: String? = nil
+	var authorEmail: String? = nil
+	var githubURL: String? = nil
+	var organizationName: String? = nil
+}
+
+func processArguments() -> TemplateInformation {
+	var templateInfo = TemplateInformation()
+	
+	let args = CommandLine.arguments
+	
+	for (index,argument) in args.enumerated() {
+		//: Why lowercased() ? In case the user accidentally mistypes something.
+		switch argument.lowercased() {
+		case "--destination".lowercased() :
+			templateInfo.destination = args.element(after: index)
+		case "--projectName".lowercased() :
+			templateInfo.projectName = args.element(after: index)
+		case "--authorName".lowercased() :
+			templateInfo.authorName = args.element(after: index)
+		case "--authorEmail".lowercased() :
+			templateInfo.authorEmail = args.element(after: index)
+		case "--githubURL".lowercased() :
+			templateInfo.githubURL = args.element(after: index)
+		case "--organizationName".lowercased() :
+			templateInfo.organizationName = args.element(after: index)
+		default:
+			//: We should probably put something to skip an argument value, but for now let's just continue on the loop ¯\_(ツ)_/¯
+			break
+		}
+	}
+	return templateInfo
+}
+
 // MARK: - Program
 
 print("Welcome to the SwiftPlate project generator 🐣")
 
-let destination = askForDestination()
-let projectName = askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
-let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
-let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
-let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
-let organizationName = askForOptionalInfo(question: "🏢  What's your organization name?")
+let templateFromArguments = processArguments()
+
+let destination = templateFromArguments.destination ?? askForDestination()
+let projectName = templateFromArguments.projectName ?? askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
+let authorName = templateFromArguments.authorName ?? askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
+let authorEmail = templateFromArguments.authorEmail ?? askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
+let gitHubURL = templateFromArguments.githubURL ?? askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
+let organizationName = templateFromArguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
