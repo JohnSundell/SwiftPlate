@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = "0.1"
   s.summary      = ""
   s.description  = <<-DESC
-Your description here.
+    Your description here.
   DESC
   s.homepage     = "{URL}"
   s.license      = { :type => "MIT", :file => "LICENSE" }
