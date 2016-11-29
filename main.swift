@@ -58,17 +58,17 @@ extension FileManager {
 }
 
 extension Array {
-	func element(after index: Int) -> Element? {
-		
-		//: handles not only negative indices, but also index == self.count
-		//: might be over-engineered, we only need to check for second condition
-		let arrRange = [Int](0..<self.count)
-		if arrRange.contains(index + 1) {
-			return self[index + 1]
-		} else {
-			return nil
-		}
-	}
+    func element(after index: Int) -> Element? {
+        
+        //: handles not only negative indices, but also index == self.count
+        //: might be over-engineered, we only need to check for second condition
+        let arrRange = [Int](0..<self.count)
+        if arrRange.contains(index + 1) {
+            return self[index + 1]
+        } else {
+            return nil
+        }
+    }
 }
 
 // MARK: - Types
@@ -80,7 +80,7 @@ class StringReplacer {
     private let gitHubURL: String
     private let year: String
     private let organizationName: String
-
+    
     init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
         self.projectName = projectName
         self.authorName = authorName
@@ -95,11 +95,11 @@ class StringReplacer {
     
     func process(string: String) -> String {
         return string.replacingOccurrences(of: "{PROJECT}", with: projectName)
-                     .replacingOccurrences(of: "{AUTHOR}", with: authorName)
-                     .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
-                     .replacingOccurrences(of: "{URL}", with: gitHubURL)
-                     .replacingOccurrences(of: "{YEAR}", with: year)
-                     .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
+            .replacingOccurrences(of: "{AUTHOR}", with: authorName)
+            .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
+            .replacingOccurrences(of: "{URL}", with: gitHubURL)
+            .replacingOccurrences(of: "{YEAR}", with: year)
+            .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
     func process(filesInFolderWithPath folderPath: String) throws {
@@ -202,40 +202,40 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
 
 //: This *could* just be a dictionary, but a struct felt cleaner. Also, we get type safety(and autocompletion) for free!!
 struct TemplateInformation {
-	var destination: String? = nil
-	var projectName: String? = nil
-	var authorName: String? = nil
-	var authorEmail: String? = nil
-	var githubURL: String? = nil
-	var organizationName: String? = nil
+    var destination: String? = nil
+    var projectName: String? = nil
+    var authorName: String? = nil
+    var authorEmail: String? = nil
+    var githubURL: String? = nil
+    var organizationName: String? = nil
 }
 
 func processArguments() -> TemplateInformation {
-	var templateInfo = TemplateInformation()
-	
-	let args = CommandLine.arguments
-	
-	for (index,argument) in args.enumerated() {
-		//: Why lowercased() ? In case the user accidentally mistypes something.
-		switch argument.lowercased() {
-		case "--destination".lowercased() :
-			templateInfo.destination = args.element(after: index)
-		case "--projectName".lowercased() :
-			templateInfo.projectName = args.element(after: index)
-		case "--authorName".lowercased() :
-			templateInfo.authorName = args.element(after: index)
-		case "--authorEmail".lowercased() :
-			templateInfo.authorEmail = args.element(after: index)
-		case "--githubURL".lowercased() :
-			templateInfo.githubURL = args.element(after: index)
-		case "--organizationName".lowercased() :
-			templateInfo.organizationName = args.element(after: index)
-		default:
-			//: We should probably put something to skip an argument value, but for now let's just continue on the loop ¯\_(ツ)_/¯
-			break
-		}
-	}
-	return templateInfo
+    var templateInfo = TemplateInformation()
+    
+    let args = CommandLine.arguments
+    
+    for (index,argument) in args.enumerated() {
+        //: Why lowercased() ? In case the user accidentally mistypes something.
+        switch argument.lowercased() {
+        case "--destination".lowercased() :
+            templateInfo.destination = args.element(after: index)
+        case "--projectName".lowercased() :
+            templateInfo.projectName = args.element(after: index)
+        case "--authorName".lowercased() :
+            templateInfo.authorName = args.element(after: index)
+        case "--authorEmail".lowercased() :
+            templateInfo.authorEmail = args.element(after: index)
+        case "--githubURL".lowercased() :
+            templateInfo.githubURL = args.element(after: index)
+        case "--organizationName".lowercased() :
+            templateInfo.organizationName = args.element(after: index)
+        default:
+            //: We should probably put something to skip an argument value, but for now let's just continue on the loop ¯\_(ツ)_/¯
+            break
+        }
+    }
+    return templateInfo
 }
 
 // MARK: - Program
