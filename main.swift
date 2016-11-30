@@ -152,18 +152,27 @@ func askForBooleanInfo(question: String) -> Bool {
     }
 }
 
-func askForDestination() -> String {
+func askForDestination(project name: String) -> String {
     let destination = askForOptionalInfo(
         question: "📦  Where would you like to generate a project?",
         questionSuffix: "(Leave empty to use current directory)"
     )
-    
+
     let fileManager = FileManager.default
     
     if let destination = destination {
-        guard fileManager.fileExists(atPath: destination) else {
-            printError("That path doesn't exist. Try again.")
-            return askForDestination()
+
+        let parentDirectory = destination + (destination.characters.last == "/" ? "" : "/")
+        let directory = (name.characters.last == "/" ?  "\(name)" : "\(name)/")
+        let fullPath = parentDirectory + directory
+
+        guard fileManager.fileExists(atPath: fullPath) else {
+            let process = Process()
+            process.launchPath = "/bin/bash"
+            process.arguments = ["-c", "mkdir \(fullPath)"]
+            process.launch()
+            process.waitUntilExit()
+            return fullPath
         }
         
         return destination
@@ -190,8 +199,8 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
 
 print("Welcome to the SwiftPlate project generator 🐣")
 
-let destination = askForDestination()
 let projectName = askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
+let destination = askForDestination(project: projectName)
 let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
 let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
 let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
