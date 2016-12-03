@@ -58,13 +58,13 @@ extension FileManager {
 }
 
 extension Array {
-    func element(after index: Int) -> Element? {
+    func element(after index: UInt) -> Element? {
         
         //: handles not only negative indices, but also index == self.count
         //: might be over-engineered, we only need to check for second condition
         let arrRange = [Int](0..<self.count)
-        if arrRange.contains(index + 1) {
-            return self[index + 1]
+        if arrRange.contains(Int(index) + 1) {
+            return self[Int(index) + 1]
         } else {
             return nil
         }
@@ -201,35 +201,35 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
 }
 
 //: This *could* just be a dictionary, but a struct felt cleaner. Also, we get type safety(and autocompletion) for free!!
-struct TemplateInformation {
-    var destination: String? = nil
-    var projectName: String? = nil
-    var authorName: String? = nil
-    var authorEmail: String? = nil
-    var githubURL: String? = nil
-    var organizationName: String? = nil
+struct Arguments {
+    var destination: String?
+    var projectName: String?
+    var authorName: String?
+    var authorEmail: String?
+    var githubURL: String?
+    var organizationName: String?
 }
 
-func processArguments() -> TemplateInformation {
-    var templateInfo = TemplateInformation()
+func processArguments() -> Arguments {
+    var templateInfo = Arguments()
     
     let args = CommandLine.arguments
     
     for (index,argument) in args.enumerated() {
         //: Why lowercased() ? In case the user accidentally mistypes something.
         switch argument.lowercased() {
-        case "--destination".lowercased() :
-            templateInfo.destination = args.element(after: index)
-        case "--projectName".lowercased() :
-            templateInfo.projectName = args.element(after: index)
-        case "--authorName".lowercased() :
-            templateInfo.authorName = args.element(after: index)
-        case "--authorEmail".lowercased() :
-            templateInfo.authorEmail = args.element(after: index)
-        case "--githubURL".lowercased() :
-            templateInfo.githubURL = args.element(after: index)
-        case "--organizationName".lowercased() :
-            templateInfo.organizationName = args.element(after: index)
+        case "--destination" :
+            templateInfo.destination = args.element(after: UInt(index))
+        case "--projectName" :
+            templateInfo.projectName = args.element(after: UInt(index))
+        case "--authorName" :
+            templateInfo.authorName = args.element(after: UInt(index))
+        case "--authorEmail" :
+            templateInfo.authorEmail = args.element(after: UInt(index))
+        case "--githubURL" :
+            templateInfo.githubURL = args.element(after: UInt(index))
+        case "--organizationName" :
+            templateInfo.organizationName = args.element(after: UInt(index))
         default:
             //: We should probably put something to skip an argument value, but for now let's just continue on the loop ¯\_(ツ)_/¯
             break
