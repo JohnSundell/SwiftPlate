@@ -57,6 +57,20 @@ extension FileManager {
     }
 }
 
+extension Array {
+    func element(after index: UInt) -> Element? {
+        
+        //: handles not only negative indices, but also index == self.count
+        //: might be over-engineered, we only need to check for second condition
+        let arrRange = [Int](0..<self.count)
+        if arrRange.contains(Int(index) + 1) {
+            return self[Int(index) + 1]
+        } else {
+            return nil
+        }
+    }
+}
+
 // MARK: - Types
 
 class StringReplacer {
@@ -66,7 +80,7 @@ class StringReplacer {
     private let gitHubURL: String
     private let year: String
     private let organizationName: String
-
+    
     init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
         self.projectName = projectName
         self.authorName = authorName
@@ -81,11 +95,11 @@ class StringReplacer {
     
     func process(string: String) -> String {
         return string.replacingOccurrences(of: "{PROJECT}", with: projectName)
-                     .replacingOccurrences(of: "{AUTHOR}", with: authorName)
-                     .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
-                     .replacingOccurrences(of: "{URL}", with: gitHubURL)
-                     .replacingOccurrences(of: "{YEAR}", with: year)
-                     .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
+            .replacingOccurrences(of: "{AUTHOR}", with: authorName)
+            .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
+            .replacingOccurrences(of: "{URL}", with: gitHubURL)
+            .replacingOccurrences(of: "{YEAR}", with: year)
+            .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
     func process(filesInFolderWithPath folderPath: String) throws {
@@ -186,16 +200,56 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
     print("✅  Done")
 }
 
+//: This *could* just be a dictionary, but a struct felt cleaner. Also, we get type safety(and autocompletion) for free!!
+struct Arguments {
+    var destination: String?
+    var projectName: String?
+    var authorName: String?
+    var authorEmail: String?
+    var githubURL: String?
+    var organizationName: String?
+}
+
+func processArguments() -> Arguments {
+    var templateInfo = Arguments()
+    
+    let args = CommandLine.arguments
+    
+    for (index,argument) in args.enumerated() {
+        //: Why lowercased() ? In case the user accidentally mistypes something.
+        switch argument.lowercased() {
+        case "--destination" :
+            templateInfo.destination = args.element(after: UInt(index))
+        case "--projectName" :
+            templateInfo.projectName = args.element(after: UInt(index))
+        case "--authorName" :
+            templateInfo.authorName = args.element(after: UInt(index))
+        case "--authorEmail" :
+            templateInfo.authorEmail = args.element(after: UInt(index))
+        case "--githubURL" :
+            templateInfo.githubURL = args.element(after: UInt(index))
+        case "--organizationName" :
+            templateInfo.organizationName = args.element(after: UInt(index))
+        default:
+            //: We should probably put something to skip an argument value, but for now let's just continue on the loop ¯\_(ツ)_/¯
+            break
+        }
+    }
+    return templateInfo
+}
+
 // MARK: - Program
 
 print("Welcome to the SwiftPlate project generator 🐣")
 
-let destination = askForDestination()
-let projectName = askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
-let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
-let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
-let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
-let organizationName = askForOptionalInfo(question: "🏢  What's your organization name?")
+let templateFromArguments = processArguments()
+
+let destination = templateFromArguments.destination ?? askForDestination()
+let projectName = templateFromArguments.projectName ?? askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
+let authorName = templateFromArguments.authorName ?? askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
+let authorEmail = templateFromArguments.authorEmail ?? askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
+let gitHubURL = templateFromArguments.githubURL ?? askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
+let organizationName = templateFromArguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
