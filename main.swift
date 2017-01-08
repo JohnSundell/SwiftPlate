@@ -95,11 +95,11 @@ class StringReplacer {
     
     func process(string: String) -> String {
         return string.replacingOccurrences(of: "{PROJECT}", with: projectName)
-            .replacingOccurrences(of: "{AUTHOR}", with: authorName)
-            .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
-            .replacingOccurrences(of: "{URL}", with: gitHubURL)
-            .replacingOccurrences(of: "{YEAR}", with: year)
-            .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
+                     .replacingOccurrences(of: "{AUTHOR}", with: authorName)
+                     .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
+                     .replacingOccurrences(of: "{URL}", with: gitHubURL)
+                     .replacingOccurrences(of: "{YEAR}", with: year)
+                     .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
     func process(filesInFolderWithPath folderPath: String) throws {
