@@ -76,6 +76,7 @@ struct Arguments {
     var authorEmail: String?
     var githubURL: String?
     var organizationName: String?
+    var repositoryURL: URL?
     
     init(commandLineArguments arguments: [String]) {
         for (index, argument) in arguments.enumerated() {
@@ -92,6 +93,10 @@ struct Arguments {
                 githubURL = arguments.element(after: index)
             case "--organizationname":
                 organizationName = arguments.element(after: index)
+            case "--repo":
+                if let urlString = arguments.element(after: index) {
+                    repositoryURL = URL(string: urlString)
+                }
             default:
                 break
             }
@@ -212,10 +217,10 @@ func askForDestination() -> String {
     return fileManager.currentDirectoryPath
 }
 
-func performGitClone(path: String) throws {
+func performGitClone(url: URL, path: String) throws {
     let process = Process()
     process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "git clone https://github.com/JohnSundell/SwiftPlate.git '\(path)' -q"]
+    process.arguments = ["-c", "git clone \(url.absoluteString) '\(path)' -q"]
     process.launch()
     process.waitUntilExit()
 }
@@ -279,7 +284,8 @@ do {
     }
     
     try performCommand(description: "Making a local clone of the SwiftPlate repo") {
-        try performGitClone(path: gitClonePath)
+        let repositoryURL = arguments.repositoryURL ?? URL(string: "https://github.com/JohnSundell/SwiftPlate.git")!
+        try performGitClone(url: repositoryURL, path: gitClonePath)
     }
     
     try performCommand(description: "Copying template folder") {
