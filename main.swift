@@ -81,19 +81,19 @@ struct Arguments {
     init(commandLineArguments arguments: [String]) {
         for (index, argument) in arguments.enumerated() {
             switch argument.lowercased() {
-            case "--destination":
+            case "--destination", "-d":
                 destination = arguments.element(after: index)
-            case "--projectname":
+            case "--project", "-p":
                 projectName = arguments.element(after: index)
-            case "--authorname":
+            case "--name", "-n":
                 authorName = arguments.element(after: index)
-            case "--authoremail":
+            case "--email", "-e":
                 authorEmail = arguments.element(after: index)
-            case "--githuburl":
+            case "--url", "-u":
                 githubURL = arguments.element(after: index)
-            case "--organizationname":
+            case "--organization", "-o":
                 organizationName = arguments.element(after: index)
-            case "--repo":
+            case "--repo", "-r":
                 if let urlString = arguments.element(after: index) {
                     repositoryURL = URL(string: urlString)
                 }
