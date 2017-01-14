@@ -54,6 +54,7 @@ Besides using the guide to input information, SwiftPlate also supports command l
 | GitHub URL | Any URL you'll be hosting the project at (for Podspec) | `--url` | `-u` |
 | Organization name | The name of your organization | `--organization` | `-o` |
 | Repo | Any custom SwiftPlate repository that should be used for templates | `--repo` | `-r` |
+| Force | Prevent user prompt at the end (for CIs etc.) | `--force` | `-f` | 
 
 ## Questions or feedback?
 
