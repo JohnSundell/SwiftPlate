@@ -77,7 +77,7 @@ struct Arguments {
     var githubURL: String?
     var organizationName: String?
     var repositoryURL: URL?
-	var isForce: Bool = false
+    var forceEnabled: Bool = false
     
     init(commandLineArguments arguments: [String]) {
         for (index, argument) in arguments.enumerated() {
@@ -98,8 +98,8 @@ struct Arguments {
                 if let urlString = arguments.element(after: index) {
                     repositoryURL = URL(string: urlString)
                 }
-			case "--force", "-f":
-				isForce = true
+            case "--force", "-f":
+				forceEnabled = true
             default:
                 break
             }
@@ -266,8 +266,10 @@ if let organizationName = organizationName {
 
 print("---------------------------------------------------------------------")
 
-if !arguments.isForce && !askForBooleanInfo(question: "Proceed? ✅") {
-    exit(0)
+if !arguments.forceEnabled {
+    if !askForBooleanInfo(question: "Proceed? ✅") {
+        exit(0)
+    }
 }
 
 print("🚀  Starting to generate project \(projectName)...")
