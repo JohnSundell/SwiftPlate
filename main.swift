@@ -99,7 +99,7 @@ struct Arguments {
                     repositoryURL = URL(string: urlString)
                 }
             case "--force", "-f":
-				forceEnabled = true
+                forceEnabled = true
             default:
                 break
             }
