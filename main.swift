@@ -28,10 +28,26 @@ import Foundation
 
 // MARK: - Extensions
 
-extension Pipe {
-    var output: String? {
-        let outputData = fileHandleForReading.readDataToEndOfFile()
-        return String(data: outputData, encoding: .utf8)
+extension Process {
+    @discardableResult func launchBash(withCommand command: String) -> String? {
+        launchPath = "/bin/bash"
+        arguments = ["-c", command]
+        
+        let pipe = Pipe()
+        standardOutput = pipe
+        
+        // Silent errors by assigning a dummy pipe to the error output
+        standardError = Pipe()
+        
+        launch()
+        waitUntilExit()
+        
+        let outputData = pipe.fileHandleForReading.readDataToEndOfFile()
+        return String(data: outputData, encoding: .utf8)?.nonEmpty
+    }
+    
+    func gitConfigValue(forKey key: String) -> String? {
+        return launchBash(withCommand: "git config --global --get \(key)")?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
@@ -42,6 +58,15 @@ extension String {
         }
         
         return self
+    }
+    
+    func withoutSuffix(_ suffix: String) -> String {
+        guard hasSuffix(suffix) else {
+            return self
+        }
+        
+        let startIndex = index(endIndex, offsetBy: -suffix.characters.count)
+        return replacingCharacters(in: startIndex..<endIndex, with: "")
     }
 }
 
@@ -57,7 +82,55 @@ extension FileManager {
     }
 }
 
+extension Array {
+    func element(after index: Int) -> Element? {
+        guard index >= 0 && index < count else {
+            return nil
+        }
+        
+        return self[index + 1]
+    }
+}
+
 // MARK: - Types
+
+struct Arguments {
+    var destination: String?
+    var projectName: String?
+    var authorName: String?
+    var authorEmail: String?
+    var githubURL: String?
+    var organizationName: String?
+    var repositoryURL: URL?
+    var forceEnabled: Bool = false
+    
+    init(commandLineArguments arguments: [String]) {
+        for (index, argument) in arguments.enumerated() {
+            switch argument.lowercased() {
+            case "--destination", "-d":
+                destination = arguments.element(after: index)
+            case "--project", "-p":
+                projectName = arguments.element(after: index)
+            case "--name", "-n":
+                authorName = arguments.element(after: index)
+            case "--email", "-e":
+                authorEmail = arguments.element(after: index)
+            case "--url", "-u":
+                githubURL = arguments.element(after: index)
+            case "--organization", "-o":
+                organizationName = arguments.element(after: index)
+            case "--repo", "-r":
+                if let urlString = arguments.element(after: index) {
+                    repositoryURL = URL(string: urlString)
+                }
+            case "--force", "-f":
+                forceEnabled = true
+            default:
+                break
+            }
+        }
+    }
+}
 
 class StringReplacer {
     private let projectName: String
@@ -67,7 +140,7 @@ class StringReplacer {
     private let year: String
     private let today: String
     private let organizationName: String
-
+    
     init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
         self.projectName = projectName
         self.authorName = authorName
@@ -179,12 +252,54 @@ func askForDestination() -> String {
     return fileManager.currentDirectoryPath
 }
 
-func performGitClone(path: String) throws {
-    let process = Process()
-    process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "git clone https://github.com/JohnSundell/SwiftPlate.git '\(path)' -q"]
-    process.launch()
-    process.waitUntilExit()
+func askForProjectName(destination: String) -> String {
+    let projectFolderName = destination.withoutSuffix("/").components(separatedBy: "/").last!
+    
+    let projectName = askForOptionalInfo(
+        question: "📛  What's the name of your project?",
+        questionSuffix: "(Leave empty to use the name of the project folder: \(projectFolderName))"
+    )
+    
+    return projectName ?? projectFolderName
+}
+
+func askForAuthorName() -> String {
+    let gitName = Process().gitConfigValue(forKey: "user.name")
+    let question = "👶  What's your name?"
+    
+    if let gitName = gitName {
+        let authorName = askForOptionalInfo(question: question, questionSuffix: "(Leave empty to use your git config name: \(gitName))")
+        return authorName ?? gitName
+    }
+    
+    return askForRequiredInfo(question: question, errorMessage: "Your name cannot be empty")
+}
+
+func askForAuthorEmail() -> String? {
+    let gitEmail = Process().gitConfigValue(forKey: "user.email")
+    let question = "📫  What's your email address (for Podspec)?"
+    
+    if let gitEmail = gitEmail {
+        let authorEmail = askForOptionalInfo(question: question, questionSuffix: "(Leave empty to use your git config email: \(gitEmail))")
+        return authorEmail ?? gitEmail
+    }
+    
+    return askForOptionalInfo(question: question)
+}
+
+func askForGitHubURL(destination: String) -> String? {
+    let gitURL = Process().launchBash(withCommand: "cd \(destination) && git remote get-url origin")?
+        .trimmingCharacters(in: .whitespacesAndNewlines)
+        .withoutSuffix(".git")
+    
+    let question = "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?"
+    
+    if let gitURL = gitURL {
+        let gitHubURL = askForOptionalInfo(question: question, questionSuffix: "(Leave empty to use the remote URL of your repo: \(gitURL))")
+        return gitHubURL ?? gitURL
+    }
+    
+    return askForOptionalInfo(question: question)
 }
 
 func performCommand(description: String, command: () throws -> Void) rethrows {
@@ -197,12 +312,13 @@ func performCommand(description: String, command: () throws -> Void) rethrows {
 
 print("Welcome to the SwiftPlate project generator 🐣")
 
-let destination = askForDestination()
-let projectName = askForRequiredInfo(question: "📛  What's the name of your project?", errorMessage: "Project name cannot be empty")
-let authorName = askForRequiredInfo(question: "👶  What's your name?", errorMessage: "Your name cannot be empty")
-let authorEmail = askForOptionalInfo(question: "📫  What's your email address (for Podspec)?")
-let gitHubURL = askForOptionalInfo(question: "🌍  Any GitHub URL that you'll be hosting this project at (for Podspec)?")
-let organizationName = askForOptionalInfo(question: "🏢  What's your organization name?")
+let arguments = Arguments(commandLineArguments: CommandLine.arguments)
+let destination = arguments.destination ?? askForDestination()
+let projectName = arguments.projectName ?? askForProjectName(destination: destination)
+let authorName = arguments.authorName ?? askForAuthorName()
+let authorEmail = arguments.authorEmail ?? askForAuthorEmail()
+let gitHubURL = arguments.githubURL ?? askForGitHubURL(destination: destination)
+let organizationName = arguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
@@ -224,8 +340,10 @@ if let organizationName = organizationName {
 
 print("---------------------------------------------------------------------")
 
-if !askForBooleanInfo(question: "Proceed? ✅") {
-    exit(0)
+if !arguments.forceEnabled {
+    if !askForBooleanInfo(question: "Proceed? ✅") {
+        exit(0)
+    }
 }
 
 print("🚀  Starting to generate project \(projectName)...")
@@ -244,8 +362,9 @@ do {
         try fileManager.createDirectory(atPath: temporaryDirectoryPath, withIntermediateDirectories: false, attributes: nil)
     }
     
-    try performCommand(description: "Making a local clone of the SwiftPlate repo") {
-        try performGitClone(path: gitClonePath)
+    performCommand(description: "Making a local clone of the SwiftPlate repo") {
+        let repositoryURL = arguments.repositoryURL ?? URL(string: "https://github.com/JohnSundell/SwiftPlate.git")!
+        Process().launchBash(withCommand: "git clone \(repositoryURL.absoluteString) '\(gitClonePath)' -q")
     }
     
     try performCommand(description: "Copying template folder") {

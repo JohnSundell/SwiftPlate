@@ -40,6 +40,22 @@ or
 - Move the built binary to `/usr/local/bin`.
 - Run `swiftplate` in your terminal.
 
+## Command line arguments
+
+Besides using the guide to input information, SwiftPlate also supports command line arguments when launched. When a certain piece of information is supplied through an argument, SwiftPlate won't ask for that information when run. These are the arguments currently supported:
+
+
+| Name | Description | Long parameter | Short parameter |
+| ---- | ----------- | -------------- | --------------- |
+| Destination | Where the generated project should be saved | `--destination` | `-d` |
+| Project name | The name of your project | `--project` | `-p` |
+| Author name | Your name | `--name` | `-n` |
+| Author email | Your email (for Podspec) | `--email` | `-e` |
+| GitHub URL | Any URL you'll be hosting the project at (for Podspec) | `--url` | `-u` |
+| Organization name | The name of your organization | `--organization` | `-o` |
+| Repo | Any custom SwiftPlate repository that should be used for templates | `--repo` | `-r` |
+| Force | Prevent user prompt at the end (for CIs etc.) | `--force` | `-f` | 
+
 ## Questions or feedback?
 
 Feel free to [open an issue](https://github.com/JohnSundell/SwiftPlate/issues/new), or find me [@johnsundell on Twitter](https://twitter.com/johnsundell).
