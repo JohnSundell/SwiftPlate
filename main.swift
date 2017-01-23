@@ -138,7 +138,6 @@ class StringReplacer {
     private let authorEmail: String
     private let gitHubURL: String
     private let year: String
-    private let today: String
     private let organizationName: String
     
     init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
@@ -151,7 +150,10 @@ class StringReplacer {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY"
         self.year = dateFormatter.string(from: Date())
-        self.today = DateFormatter.localizedString(
+    }
+    
+    private var dateString: String {
+        return DateFormatter.localizedString(
             from: Date(),
             dateStyle: DateFormatter.Style.medium,
             timeStyle: DateFormatter.Style.none
@@ -164,7 +166,7 @@ class StringReplacer {
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
                      .replacingOccurrences(of: "{YEAR}", with: year)
-                     .replacingOccurrences(of: "{TODAY}", with: today)
+                     .replacingOccurrences(of: "{DATE}", with: dateString)
                      .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
