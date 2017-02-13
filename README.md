@@ -21,7 +21,7 @@ Just run `swiftplate`, and you’ll be presented with a simple step-by-step guid
 
 Either:
 
-- Run `main.swift` in your terminal.
+- Run `main.swift` in your terminal as `./main.swift` or `swift main.swift`
 
 or
 
