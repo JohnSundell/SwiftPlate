@@ -361,9 +361,18 @@ do {
     }
     
     try performCommand(description: "Copying template folder") {
+        let ignorableItems = ["README.md", "LICENSE"]
+
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
             let originPath = templatePath + "/" + itemName
             let destinationPath = destination + "/" + itemName
+
+            if ignorableItems.contains(itemName) {
+                guard fileManager.fileExists(atPath: destinationPath) == false else {
+                    continue
+                }
+            }
+
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
     }
