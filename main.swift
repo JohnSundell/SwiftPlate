@@ -361,7 +361,7 @@ do {
     }
     
     try performCommand(description: "Copying template folder") {
-        let ignorableItems = ["readme.md", "license"]
+        let ignorableItems: Set<String> = ["readme.md", "license"]
         let ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
             $0.lowercased()
         }.filter {
