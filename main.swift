@@ -163,10 +163,9 @@ class StringReplacer {
     
     func process(filesInFolderWithPath folderPath: String) throws {
         let fileManager = FileManager.default
-        
-        for itemName in try fileManager.contentsOfDirectory(atPath: folderPath) {
-            let currentFileName = URL.init(fileURLWithPath: #file).lastPathComponent
+        let currentFileName = URL.init(fileURLWithPath: #file).lastPathComponent
 
+        for itemName in try fileManager.contentsOfDirectory(atPath: folderPath) {
             if itemName.hasPrefix(".") || itemName == currentFileName {
                 continue
             }
