@@ -152,12 +152,21 @@ class StringReplacer {
         self.year = dateFormatter.string(from: Date())
     }
     
+    private var dateString: String {
+        return DateFormatter.localizedString(
+            from: Date(),
+            dateStyle: DateFormatter.Style.medium,
+            timeStyle: DateFormatter.Style.none
+        )
+    }
+    
     func process(string: String) -> String {
         return string.replacingOccurrences(of: "{PROJECT}", with: projectName)
                      .replacingOccurrences(of: "{AUTHOR}", with: authorName)
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
                      .replacingOccurrences(of: "{YEAR}", with: year)
+                     .replacingOccurrences(of: "{DATE}", with: dateString)
                      .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
     
