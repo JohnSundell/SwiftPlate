@@ -371,9 +371,22 @@ do {
     }
     
     try performCommand(description: "Copying template folder") {
+        let ignorableItems: Set<String> = ["readme.md", "license"]
+        let ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
+            $0.lowercased()
+        }.filter {
+            ignorableItems.contains($0)
+        }
+
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
             let originPath = templatePath + "/" + itemName
             let destinationPath = destination + "/" + itemName
+
+            let lowercasedItemName = itemName.lowercased()
+            guard ignoredItems.contains(lowercasedItemName) == false else {
+                continue
+            }
+
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
     }
