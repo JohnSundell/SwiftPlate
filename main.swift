@@ -172,12 +172,13 @@ class StringReplacer {
     
     func process(filesInFolderWithPath folderPath: String) throws {
         let fileManager = FileManager.default
-        
+        let currentFileName = URL.init(fileURLWithPath: #file).lastPathComponent
+
         for itemName in try fileManager.contentsOfDirectory(atPath: folderPath) {
-            if itemName.hasPrefix(".") {
+            if itemName.hasPrefix(".") || itemName == currentFileName {
                 continue
             }
-            
+
             let itemPath = folderPath + "/" + itemName
             let newItemPath = folderPath + "/" + process(string: itemName)
             
