@@ -19,26 +19,41 @@ Just run `swiftplate`, and you’ll be presented with a simple step-by-step guid
 
 ## Usage
 
-Either:
+### Using [Homebrew](https://brew.sh) (recommended)
 
-- Run `main.swift` in your terminal as `./main.swift` or `swift main.swift`
+```
+$ brew install swiftplate
+$ swiftplate
+```
 
-or
+### Using Make
 
-- Run `make` in your terminal to install SwiftPlate.
-- Run `swiftplate` in your terminal.
+```
+$ git clone git@github.com:JohnSundell/SwiftPlate.git
+$ cd swiftplate
+$ make
+```
 
-or
+### Using [Marathon](https://github.com/johnsundell/marathon)
 
-- Open `SwiftPlate.xcodeproj`.
-- Run the project, and use Xcode’s console to provide input.
+```
+$ git clone git@github.com:JohnSundell/SwiftPlate.git
+$ marathon run swiftplate/main
+```
 
-or
+### Using the Swift interpreter directly
 
-- Open `SwiftPlate.xcodeproj`.
-- Archive the project.
-- Move the built binary to `/usr/local/bin`.
-- Run `swiftplate` in your terminal.
+```
+$ git clone git@github.com:JohnSundell/SwiftPlate.git
+$ swift swiftplate/main.swift
+```
+
+### Using Xcode
+
+```
+$ git clone git@github.com:JohnSundell/SwiftPlate.git
+$ open swiftplate/SwiftPlate.xcodeproj
+```
 
 ## Command line arguments
 
@@ -54,7 +69,7 @@ Besides using the guide to input information, SwiftPlate also supports command l
 | GitHub URL | Any URL you'll be hosting the project at (for Podspec) | `--url` | `-u` |
 | Organization name | The name of your organization | `--organization` | `-o` |
 | Repo | Any custom SwiftPlate repository that should be used for templates | `--repo` | `-r` |
-| Force | Prevent user prompt at the end (for CIs etc.) | `--force` | `-f` | 
+| Force | Prevent user prompt at the end (for CIs etc.) | `--force` | `-f` |
 
 ## Questions or feedback?
 

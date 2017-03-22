@@ -172,12 +172,13 @@ class StringReplacer {
     
     func process(filesInFolderWithPath folderPath: String) throws {
         let fileManager = FileManager.default
-        
+        let currentFileName = URL.init(fileURLWithPath: #file).lastPathComponent
+
         for itemName in try fileManager.contentsOfDirectory(atPath: folderPath) {
-            if itemName.hasPrefix(".") {
+            if itemName.hasPrefix(".") || itemName == currentFileName {
                 continue
             }
-            
+
             let itemPath = folderPath + "/" + itemName
             let newItemPath = folderPath + "/" + process(string: itemName)
             
@@ -370,9 +371,22 @@ do {
     }
     
     try performCommand(description: "Copying template folder") {
+        let ignorableItems: Set<String> = ["readme.md", "license"]
+        let ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
+            $0.lowercased()
+        }.filter {
+            ignorableItems.contains($0)
+        }
+
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
             let originPath = templatePath + "/" + itemName
             let destinationPath = destination + "/" + itemName
+
+            let lowercasedItemName = itemName.lowercased()
+            guard ignoredItems.contains(lowercasedItemName) == false else {
+                continue
+            }
+
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
     }
