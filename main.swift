@@ -138,6 +138,7 @@ class StringReplacer {
     private let authorEmail: String
     private let gitHubURL: String
     private let year: String
+    private let today: String
     private let organizationName: String
     
     init(projectName: String, authorName: String, authorEmail: String?, gitHubURL: String?, organizationName: String?) {
@@ -147,9 +148,14 @@ class StringReplacer {
         self.gitHubURL = gitHubURL ?? ""
         self.organizationName = organizationName ?? projectName
         
+
+        let yearFormatter = DateFormatter()
+        yearFormatter.dateFormat = "YYYY"
+        self.year = yearFormatter.string(from: Date())
+
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY"
-        self.year = dateFormatter.string(from: Date())
+        dateFormatter.dateStyle = .short
+        self.today = dateFormatter.string(from: Date())
     }
     
     private var dateString: String {
