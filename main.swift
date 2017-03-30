@@ -172,6 +172,7 @@ class StringReplacer {
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
                      .replacingOccurrences(of: "{YEAR}", with: year)
+                     .replacingOccurrences(of: "{TODAY}", with: today)
                      .replacingOccurrences(of: "{DATE}", with: dateString)
                      .replacingOccurrences(of: "{ORGANIZATION}", with: organizationName)
     }
