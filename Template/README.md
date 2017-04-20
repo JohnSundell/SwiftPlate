@@ -15,4 +15,4 @@ Clone the repo and drag the file `{PRODUCT}.swift` into your Xcode project.
 
 **Swift Package Manager:**
 
-Add the line `.Package(url: "{URL}.git", majorVersion: 2)` to your `Package.swift` file.
+Add the line `.Package(url: "{URL}.git", majorVersion: 1)` to your `Package.swift` file.
