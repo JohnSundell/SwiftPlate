@@ -100,6 +100,7 @@ struct Arguments {
     var authorName: String?
     var authorEmail: String?
     var githubURL: String?
+    var CarthagePath: String?
     var organizationName: String?
     var repositoryURL: URL?
     var forceEnabled: Bool = false
@@ -146,6 +147,7 @@ class StringReplacer {
         self.authorName = authorName
         self.authorEmail = authorEmail ?? ""
         self.gitHubURL = gitHubURL ?? ""
+        self.CarthagePath = CarthagePath
         self.organizationName = organizationName ?? projectName
         
 
@@ -171,6 +173,7 @@ class StringReplacer {
                      .replacingOccurrences(of: "{AUTHOR}", with: authorName)
                      .replacingOccurrences(of: "{EMAIL}", with: authorEmail)
                      .replacingOccurrences(of: "{URL}", with: gitHubURL)
+                     .replacingOccurrences(of: "{CARTHAGE_PATH}", with: CarthagePath)
                      .replacingOccurrences(of: "{YEAR}", with: year)
                      .replacingOccurrences(of: "{TODAY}", with: today)
                      .replacingOccurrences(of: "{DATE}", with: dateString)

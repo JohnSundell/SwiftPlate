@@ -7,7 +7,7 @@ Add the line `pod "{PRODUCT}"` to your `Podfile`
 
 **Carthage:**
 
-Add the line `github "{URL}/{PRODUCT}"` to your `Cartfile`
+Add the line `github "{CARTHAGE_PATH}"` to your `Cartfile`
 
 **Manual:**
 
