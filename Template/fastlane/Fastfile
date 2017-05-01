@@ -1,0 +1,69 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.16.0"
+
+default_platform :ios
+
+platform :ios do
+
+	desc "Builds the framework and runs all the tests"
+	lane :test do
+
+		# Prevent timeout issues
+		ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "120" 
+
+		# Just build the watchOS target (no tests)
+		xcodebuild(
+			project: "{PROJECT}.xcodeproj",
+		    scheme: "{PROJECT}-watchOS",
+		    clean: true,
+		    build: true
+	  	)
+
+		# Build and test the macOS target
+		scan(
+			project: "{PROJECT}.xcodeproj",
+			scheme: "{PROJECT}-macOS",
+			devices: [
+				# (deliberately empty, will use the mac this is running on)
+			],
+			clean: true,
+			skip_slack: true
+		)
+
+		# Build and test the iOS target
+		scan(
+			project: "{PROJECT}.xcodeproj",
+			scheme: "{PROJECT}-iOS",
+			devices: [
+				"iPhone SE",
+				# "iPhone 6",
+				# "iPhone 7 Plus",
+			],
+			clean: true,
+			skip_slack: true
+		)
+
+		# Build and test the tvOS target
+		scan(
+			project: "{PROJECT}.xcodeproj",
+			scheme: "{PROJECT}-tvOS",
+			devices: [
+				"Apple TV 1080p",
+			],
+			clean: true,
+			skip_slack: true
+		)
+	end
+end
