@@ -422,6 +422,12 @@ do {
         
         try replacer.process(filesInFolderWithPath: destination)
     }
+
+    if installCocoapods {
+        performCommand(description: "Setting up Cocoapods (running pod install)") {
+            Process().launchBash(withCommand: "pod install")
+        }
+    }
     
     print("All done! 🎉  Good luck with your project! 🚀")
 } catch {
