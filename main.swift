@@ -329,6 +329,7 @@ let authorName = arguments.authorName ?? askForAuthorName()
 let authorEmail = arguments.authorEmail ?? askForAuthorEmail()
 let gitHubURL = arguments.githubURL ?? askForGitHubURL(destination: destination)
 let organizationName = arguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
+let installCocoapods = askForBooleanInfo(question: "🛠  Use Cocoapods to develop and test your project?")
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
@@ -346,6 +347,10 @@ if let gitHubURL = gitHubURL {
 
 if let organizationName = organizationName {
     print("🏢  Organization Name: \(organizationName)")
+}
+
+if installCocoapods {
+    print("🛠  Using Cocoapods")
 }
 
 print("---------------------------------------------------------------------")
@@ -379,10 +384,14 @@ do {
     
     try performCommand(description: "Copying template folder") {
         let ignorableItems: Set<String> = ["readme.md", "license"]
-        let ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
+        var ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
             $0.lowercased()
         }.filter {
             ignorableItems.contains($0)
+        }
+        
+        if !installCocoapods {
+            ignoredItems.append("podfile")
         }
 
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
