@@ -329,7 +329,9 @@ let authorName = arguments.authorName ?? askForAuthorName()
 let authorEmail = arguments.authorEmail ?? askForAuthorEmail()
 let gitHubURL = arguments.githubURL ?? askForGitHubURL(destination: destination)
 let organizationName = arguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
-let installCocoapods = askForBooleanInfo(question: "🛠  Use Cocoapods to develop and test your project?")
+let useCocoapods = askForBooleanInfo(question: "🛠  Use Cocoapods to develop and test your project?")
+let useQuickAndNimble = askForBooleanInfo(question: "🔍  Use Quick and Nimble testing frameworks? (via Cocoapods)")
+let installCocoapods = useCocoapods || useQuickAndNimble
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
@@ -350,7 +352,11 @@ if let organizationName = organizationName {
 }
 
 if installCocoapods {
-    print("🛠  Using Cocoapods")
+    if useQuickAndNimble {
+        print("🔍  Using Quick and Nimble (via Cocoapods)")
+    } else {
+        print("🛠  Using Cocoapods")
+    }    
 }
 
 print("---------------------------------------------------------------------")
@@ -404,8 +410,14 @@ do {
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
 
-        if installCocoapods {
+        if useCocoapods && !useQuickAndNimble {
             let originPath = optionalItemsPath + "/" + "Podfile-blank"
+            let destinationPath = destination + "/" + "Podfile"
+            try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
+        }
+
+        if useQuickAndNimble {
+            let originPath = optionalItemsPath + "/" + "Podfile-quick+nimble"
             let destinationPath = destination + "/" + "Podfile"
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
