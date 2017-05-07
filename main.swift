@@ -368,6 +368,7 @@ do {
     let temporaryDirectoryPath = destination + "/swiftplate_temp"
     let gitClonePath = "\(temporaryDirectoryPath)/SwiftPlate"
     let templatePath = "\(gitClonePath)/Template"
+    let optionalItemsPath = templatePath + "/Optional"
     
     performCommand(description: "Removing any previous temporary folder") {
         try? fileManager.removeItem(atPath: temporaryDirectoryPath)
@@ -389,10 +390,7 @@ do {
         }.filter {
             ignorableItems.contains($0)
         }
-        
-        if !installCocoapods {
-            ignoredItems.append("podfile")
-        }
+        ignoredItems.append("optional")
 
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
             let originPath = templatePath + "/" + itemName
@@ -403,6 +401,12 @@ do {
                 continue
             }
 
+            try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
+        }
+
+        if installCocoapods {
+            let originPath = optionalItemsPath + "/" + "Podfile-blank"
+            let destinationPath = destination + "/" + "Podfile"
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
         }
     }
