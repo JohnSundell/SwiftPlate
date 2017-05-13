@@ -417,9 +417,15 @@ do {
         }
 
         if useQuickAndNimble {
-            let originPath = optionalItemsPath + "/" + "Podfile-quick+nimble"
-            let destinationPath = destination + "/" + "Podfile"
-            try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
+
+            let podfileOriginPath = optionalItemsPath + "/" + "Podfile-quick+nimble"
+            let podfileDestinationPath = destination + "/" + "Podfile"
+            try fileManager.copyItem(atPath: podfileOriginPath, toPath: podfileDestinationPath)
+
+            let testsOriginPath = optionalItemsPath + "/" + "ExampleTests-quick+nimble.swift"
+            let testsDestinationPath = destination + "/Tests/{PROJECT}Tests/" + "{PROJECT}Tests.swift"
+            try fileManager.removeItem(atPath: testsDestinationPath)
+            try fileManager.copyItem(atPath: testsOriginPath, toPath: testsDestinationPath)
         }
     }
     
