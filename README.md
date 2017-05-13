@@ -12,6 +12,7 @@ SwiftPlate will generate Xcode projects for you in seconds, that support:
 - [x] watchOS
 - [x] tvOS
 - [x] Linux
+- [x] Quick + Nimble testing
 
 Just run `swiftplate`, and you’ll be presented with a simple step-by-step guide:
 
