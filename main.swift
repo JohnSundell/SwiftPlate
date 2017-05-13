@@ -422,10 +422,20 @@ do {
             let podfileDestinationPath = destination + "/" + "Podfile"
             try fileManager.copyItem(atPath: podfileOriginPath, toPath: podfileDestinationPath)
 
+            let linuxOriginPath = optionalItemsPath + "/" + "LinuxMain-quick+nimble.swift"
+            let linuxDestinationPath = destination + "/Tests/" + "LinuxMain.swift"
+            try fileManager.removeItem(atPath: linuxDestinationPath)
+            try fileManager.copyItem(atPath: linuxOriginPath, toPath: linuxDestinationPath)
+
             let testsOriginPath = optionalItemsPath + "/" + "ExampleTests-quick+nimble.swift"
             let testsDestinationPath = destination + "/Tests/{PROJECT}Tests/" + "{PROJECT}Tests.swift"
             try fileManager.removeItem(atPath: testsDestinationPath)
             try fileManager.copyItem(atPath: testsOriginPath, toPath: testsDestinationPath)
+
+            let packageOriginPath = optionalItemsPath + "/" + "Package-quick+nimble.swift"
+            let packageDestinationPath = destination + "/" + "Package.swift"
+            try fileManager.removeItem(atPath: packageDestinationPath)
+            try fileManager.copyItem(atPath: packageOriginPath, toPath: packageDestinationPath)
         }
     }
     
