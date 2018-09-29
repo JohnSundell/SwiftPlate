@@ -53,7 +53,7 @@ extension Process {
 
 extension String {
     var nonEmpty: String? {
-        guard characters.count > 0 else {
+        guard count > 0 else {
             return nil
         }
         
@@ -65,7 +65,7 @@ extension String {
             return self
         }
         
-        let startIndex = index(endIndex, offsetBy: -suffix.characters.count)
+        let startIndex = index(endIndex, offsetBy: -suffix.count)
         return replacingCharacters(in: startIndex..<endIndex, with: "")
     }
 }
