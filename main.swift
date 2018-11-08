@@ -243,23 +243,33 @@ func askForBooleanInfo(question: String) -> Bool {
 }
 
 func askForDestination() -> String {
-    let destination = askForOptionalInfo(
+    let optionalDestination = askForOptionalInfo(
         question: "📦  Where would you like to generate a project?",
         questionSuffix: "(Leave empty to use current directory)"
     )
     
     let fileManager = FileManager.default
     
-    if let destination = destination {
-        guard fileManager.fileExists(atPath: destination) else {
-            printError("That path doesn't exist. Try again.")
-            return askForDestination()
-        }
-        
+    guard let destination = optionalDestination else {
+        return fileManager.currentDirectoryPath
+    }
+    
+    if fileManager.fileExists(atPath: destination) {
         return destination
     }
     
-    return fileManager.currentDirectoryPath
+    guard askForBooleanInfo(question: "🤔 That path doesn't exist, would you like to create it?") else {
+        printError("That path still doesn't exist. Try again or create it.")
+        return askForDestination()
+    }
+    
+    do {
+        try fileManager.createDirectory(atPath: destination, withIntermediateDirectories: true)
+        return destination
+    } catch {
+        printError("\(error.localizedDescription). Try again.")
+        return askForDestination()
+    }
 }
 
 func askForProjectName(destination: String) -> String {
