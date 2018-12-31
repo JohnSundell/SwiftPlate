@@ -150,7 +150,7 @@ class StringReplacer {
         
 
         let yearFormatter = DateFormatter()
-        yearFormatter.dateFormat = "YYYY"
+        yearFormatter.dateFormat = "yyyy"
         self.year = yearFormatter.string(from: Date())
 
         let dateFormatter = DateFormatter()
