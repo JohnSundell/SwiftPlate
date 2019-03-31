@@ -216,7 +216,7 @@ func askForRequiredInfo(question: String, errorMessage errorMessageClosure: @aut
     
     guard let info = readLine()?.nonEmpty else {
         printError("\(errorMessageClosure()). Try again.")
-        return askForRequiredInfo(question: question, errorMessage: errorMessageClosure)
+        return askForRequiredInfo(question: question, errorMessage: errorMessageClosure())
     }
     
     return info
