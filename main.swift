@@ -329,6 +329,9 @@ let authorName = arguments.authorName ?? askForAuthorName()
 let authorEmail = arguments.authorEmail ?? askForAuthorEmail()
 let gitHubURL = arguments.githubURL ?? askForGitHubURL(destination: destination)
 let organizationName = arguments.organizationName ?? askForOptionalInfo(question: "🏢  What's your organization name?")
+let useCocoapods = askForBooleanInfo(question: "🛠  Use Cocoapods to develop and test your project?")
+let useQuickAndNimble = askForBooleanInfo(question: "🔍  Use Quick and Nimble testing frameworks? (via Cocoapods)")
+let installCocoapods = useCocoapods || useQuickAndNimble
 
 print("---------------------------------------------------------------------")
 print("SwiftPlate will now generate a project with the following parameters:")
@@ -348,6 +351,14 @@ if let organizationName = organizationName {
     print("🏢  Organization Name: \(organizationName)")
 }
 
+if installCocoapods {
+    if useQuickAndNimble {
+        print("🔍  Using Quick and Nimble (via Cocoapods)")
+    } else {
+        print("🛠  Using Cocoapods")
+    }    
+}
+
 print("---------------------------------------------------------------------")
 
 if !arguments.forceEnabled {
@@ -363,6 +374,7 @@ do {
     let temporaryDirectoryPath = destination + "/swiftplate_temp"
     let gitClonePath = "\(temporaryDirectoryPath)/SwiftPlate"
     let templatePath = "\(gitClonePath)/Template"
+    let optionalItemsPath = templatePath + "/Optional"
     
     performCommand(description: "Removing any previous temporary folder") {
         try? fileManager.removeItem(atPath: temporaryDirectoryPath)
@@ -379,11 +391,12 @@ do {
     
     try performCommand(description: "Copying template folder") {
         let ignorableItems: Set<String> = ["readme.md", "license"]
-        let ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
+        var ignoredItems = try fileManager.contentsOfDirectory(atPath: destination).map {
             $0.lowercased()
         }.filter {
             ignorableItems.contains($0)
         }
+        ignoredItems.append("optional")
 
         for itemName in try fileManager.contentsOfDirectory(atPath: templatePath) {
             let originPath = templatePath + "/" + itemName
@@ -395,6 +408,34 @@ do {
             }
 
             try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
+        }
+
+        if useCocoapods && !useQuickAndNimble {
+            let originPath = optionalItemsPath + "/" + "Podfile-blank"
+            let destinationPath = destination + "/" + "Podfile"
+            try fileManager.copyItem(atPath: originPath, toPath: destinationPath)
+        }
+
+        if useQuickAndNimble {
+
+            let podfileOriginPath = optionalItemsPath + "/" + "Podfile-quick+nimble"
+            let podfileDestinationPath = destination + "/" + "Podfile"
+            try fileManager.copyItem(atPath: podfileOriginPath, toPath: podfileDestinationPath)
+
+            let linuxOriginPath = optionalItemsPath + "/" + "LinuxMain-quick+nimble.swift"
+            let linuxDestinationPath = destination + "/Tests/" + "LinuxMain.swift"
+            try fileManager.removeItem(atPath: linuxDestinationPath)
+            try fileManager.copyItem(atPath: linuxOriginPath, toPath: linuxDestinationPath)
+
+            let testsOriginPath = optionalItemsPath + "/" + "ExampleTests-quick+nimble.swift"
+            let testsDestinationPath = destination + "/Tests/{PROJECT}Tests/" + "{PROJECT}Tests.swift"
+            try fileManager.removeItem(atPath: testsDestinationPath)
+            try fileManager.copyItem(atPath: testsOriginPath, toPath: testsDestinationPath)
+
+            let packageOriginPath = optionalItemsPath + "/" + "Package-quick+nimble.swift"
+            let packageDestinationPath = destination + "/" + "Package.swift"
+            try fileManager.removeItem(atPath: packageDestinationPath)
+            try fileManager.copyItem(atPath: packageOriginPath, toPath: packageDestinationPath)
         }
     }
     
@@ -412,6 +453,12 @@ do {
         )
         
         try replacer.process(filesInFolderWithPath: destination)
+    }
+
+    if installCocoapods {
+        performCommand(description: "Setting up Cocoapods (running pod install)") {
+            Process().launchBash(withCommand: "pod install")
+        }
     }
     
     print("All done! 🎉  Good luck with your project! 🚀")
